@@ -15,7 +15,6 @@ app.set('view engine', 'ejs');
 app.use(cookieParser());
 
 
-
 mongoose.set("strictQuery" , false)
 mongoose.connect("mongodb+srv://ankit:khan12345@cluster0.qfttxvo.mongodb.net/Ecommerce", 
 {useNewUrlParser: true})

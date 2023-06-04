@@ -7,9 +7,9 @@ const {verifyToken} = require("../middlewares/authMid")
 const {upload} = require("../middlewares/multer")
 
 
-router.route("/").get(Pages.homePage)
+router.route("/").get(verifyToken,Pages.homePage)
 
-router.get("/signup", Pages.postSignup)
+router.get("/signup", Pages.signupPage)
 router.post("/signup",
     body("pass2").custom((value, { req }) => {
         if (value !== req.body.pass){

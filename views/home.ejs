@@ -8,7 +8,7 @@
             overflow: hidden;"><%= product[i].itemname %></h2>
             <div class="bottom">
                 <button class="btn btn-outline-dark ms-2 about-quantity"> <a href="/addtocart/<%= product[i]._id %>" value="kuchh bhi rkhle"> Add to Cart </a></button>
-                <h3 class="price"><%= product[i].price %></h3>
+                <h3 class="price" id="<%= product[i]._id %>" value="add"><%= product[i].price %></h3>
             </div>
         </div>
     <% } %>

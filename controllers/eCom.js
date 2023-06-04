@@ -5,18 +5,18 @@ const jwt = require("jsonwebtoken")
 
 
 
-const homePage = (req, res) => {
+const homePage = async (req, res) => {
+    const your_order = await Order.findOne({'user':req.user._id}).exec()
+    const your_data = await your_order.getData()
     Product.find({}, function(err, result){
         if(!err){
             res.render("home", {
-                "product": result
+                "product": result,
+                "user": req.user.username,
+                "data" : your_data
             })
         }
     })
-    // Order.findOne({_id : "63ff45da30f16cfe009e6726"}, async function(err, order){
-    //     const nothing = await order.getData()
-    //     res.send(nothing)
-    // })
 
 }
 const signupPage = (req, res) => {
@@ -52,6 +52,7 @@ const postLogin = (req, res) => {
                         console.log(err)
                     }
                     else{
+                        res.cookie("username", user)
                         res.cookie("token", token)
                         res.redirect("/")
                     }
@@ -84,6 +85,7 @@ const postProduct = async (req, res) => {
 }
 const addToCart = async (req, res) => {
     let tempname = req.user._id
+    console.log(req.user)
     Order.findOne({user: tempname}, async function(err, order){
         if(!order){
             const newOrder = new Order({
@@ -109,6 +111,7 @@ const addToCart = async (req, res) => {
                 product : productneeded,
             })
             await nothing.save()
+            console.log(cart)
             res.redirect("/")            
         }
     }) 
@@ -116,18 +119,15 @@ const addToCart = async (req, res) => {
 
 const showCart = async (req, res) => {
     try {
-    const order = await Order.findOne({user : req.user._id}).exec();
-    if (!order) {
-        console.log("No Order was there");
-    } else {
+        const order = await Order.findOne({user : req.user._id}).exec();
         const orderData = await order.getData();
         const cart = await Cart.find({user : req.user._id}).exec();
         res.render("showCart", {
             cart: cart,
             data: orderData,
+            user : req.user.username,
         });
 
-    }
     } catch (err) {
     console.error(err);
     }
@@ -155,17 +155,13 @@ const changeValue = async (req, res) => {
 const checkoutPage = async (req, res) => {
     try {
         const order = await Order.findOne({user : req.user._id}).exec();
-        if (!order) {
-            console.log("No Order was there");
-        } else {
             const orderData = await order.getData();
             const cart = await Cart.find({user : req.user._id}).exec();
             res.render("checkout", {
                 cart: cart,
                 data: orderData,
+                user : req.user.username
             });
-    
-        }
         } catch (err) {
         console.error(err);
         }
