@@ -1,5 +1,5 @@
-# E-commerce-using-django
-An E-commerce website using Django with features of seller and buyer. It have all features like cart, checkout, history of the buyer/seller, and paypal payment integration has also been added. I'll add more feature to it because it's good but not enough.
+# E-commerce-using-ExpressJS
+An E-commerce website with features of seller and buyer. It have all features like cart, checkout, history of the buyer/seller, and paypal payment integration has also been added. I'll add more feature to it because it's good but not enough.
 
 See every website focus on the buyer side, we also have developed everthing related to buyer, 
 but the feature that make this website a stand out is it’s seller feature. A seller can choose image, write price, description, and name of the product, and he can also see everything he has posted on the site, and can remove if he wants to.
