@@ -1,0 +1,16 @@
+<%- include('uses/header'); -%>
+
+<div class="container" style="display: flex; flex-wrap: wrap;">
+    <% for(var i=0; i < product.length; i++){ %>
+        <div class="box border border-dark border-5 rounded-3">
+            <img src="<%= product[i].image %>" alt="">
+            <h2 class="ms-2" style="  white-space: nowrap;
+            overflow: hidden;"><%= product[i].itemname %></h2>
+            <div class="bottom">
+                <button class="btn btn-outline-dark ms-2 about-quantity"> <a href="/addtocart/<%= product[i]._id %>" value="kuchh bhi rkhle"> Add to Cart </a></button>
+                <h3 class="price"><%= product[i].price %></h3>
+            </div>
+        </div>
+    <% } %>
+</div>
+<%- include('uses/footer'); -%>

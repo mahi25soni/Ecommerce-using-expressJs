@@ -1,0 +1,76 @@
+<%- include('uses/header'); -%>
+
+<div class="contain p-3 mt-5">
+    
+    <a href="/"><button class="btn btn-outline-dark"><strong>&#x2190; Back to Shopping </strong> </button></a>
+    <a href="/checkout"><button class="btn btn-outline-dark" style="display: inline-block; float: right"><strong>Checkout &#x2192;</strong> </button></a>
+    <br>
+    <br>
+
+    <div class="d-flex justify-content-around">
+        <h5><strong>Total Products: <%= cart.length %> </strong> </h5> 
+        <h5><strong>Total Items: <%= data[0] %></strong> </h5>
+        <h5><strong>Net Total : <%= data[1] %></strong></h5>
+    </div>
+</div>
+
+<div class="contain mt-5">
+    <div class="cart-row">
+        <div style="flex:2;"> </div>
+        <div style="flex:3;"><strong>Name</strong> </div>
+        <div style="flex:3;"><strong>Price</strong> </div>
+        <div style="flex:3;"><strong>Quantity</strong> </div>
+        <div style="flex:3;"><strong>Total</strong> </div>
+        <div style="flex:3;"><strong>Action</strong> </div>
+    </div>
+
+    <% for(var i = 0; i < cart.length; i++) { %>
+    <div class="cart-row">
+     
+        <div style="flex:2;"> <img src="<%= cart[i].product.image %>" alt="" class="thumbnail"> </div>
+        <div style="flex:3;"><%= cart[i].product.itemname %></div>
+        <div style="flex:3;"><%= cart[i].product.price %></div>
+        <div style="flex:3; ">
+            <p class="quantity"><%= cart[i].noofitems %></p>
+            <div class="quantity">
+                <img src="images/uparrow.png" alt="uparrow" id="<%= cart[i]._id %>" class="chg-quantity about-quantity" value="add">
+                <img src="images/downarrow.png" alt="downarrow" id="<%= cart[i]._id %>" class="chg-quantity about-quantity" value="minus">
+            </div>
+        </div>
+        <div style="flex:3;"><%= cart[i].product.price * cart[i].noofitems  %></div>
+        <div style="flex:3;">
+            <button class="btn btn-sm btn-danger about-quantity" value="remove" id="<%= cart[i]._id %>">Remove</button>
+        </div>
+    </div>
+    <% } %>
+
+</div>
+
+
+<script>
+    var nothing = Array.from(document.getElementsByClassName("about-quantity"))
+    nothing.forEach((element) => {
+        element.addEventListener("click" , ()=>{
+            id = element.getAttribute("id")
+            value = element.getAttribute("value")
+            changeValue(id, value)
+        })
+    })
+
+    function changeValue(id , value){
+        fetch("/changevalue", {
+            method : "POST",
+            headers : {
+                "Content-Type" : "application/json",
+            },
+            body : JSON.stringify({'id':id , 'value':value})
+        })
+        .then((res) => {
+            res.json
+            location.reload()
+        })
+        .catch((err) => console.log(err))
+    }
+</script>
+
+<%- include('uses/footer'); -%>
