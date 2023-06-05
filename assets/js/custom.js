@@ -1,14 +1,11 @@
-// let some = document.getElementById('user-name')
-// if(some.innerHTML == 'AnonymousUser'){
-//     some.innerHTML = 'Login'
-// }
-// else{
-//     some.pathname = '/profile/'
-// }
+function getCookie(name) {
+    const cookieValue = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return cookieValue ? cookieValue.pop() : '';
+  }
+  
+const csrftoken = getCookie('csrftoken');
 
-
-
-let buttons= Array.from(document.getElementsByClassName('price'))
+let buttons= Array.from(document.getElementsByClassName('about-quantity'))
 buttons.forEach(element =>{
     element.addEventListener('click',()=>{
         id = element.getAttribute('id')
@@ -20,9 +17,10 @@ buttons.forEach(element =>{
 
 function addtocart(id , value)
 {
+    console.log("indide the function")
     data = {'value':value}
     fetch(
-        url=`/add_to_cart/${id}/`,{
+        url=`/addtocart/${id}/`,{
             method : 'POST',
             headers : {
                 'Content-Type': 'application/json',
@@ -31,16 +29,18 @@ function addtocart(id , value)
             body : JSON.stringify(data)
         }  
         )
-        .then(res => {
-            res.json,
-            location.reload()
-        })
-        .then(res => {
-            console.log(res.data)
+        .then((res) => res.json()) // Call res.json() to parse the response as JSON
+        .then((data) => {
+      console.log(data.count);
+            changeTheCart(data.count)
+    })
+    .catch((err) => console.log(err));
+    
+}
 
-        })
-        .catch(err => console.log(err))
-        
+function changeTheCart(count) {
+    const something = document.getElementById("cart-total")
+    something.innerHTML = count
 }
 
 

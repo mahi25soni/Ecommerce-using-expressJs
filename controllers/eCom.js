@@ -11,9 +11,9 @@ const homePage = async (req, res) => {
     Product.find({}, function(err, result){
         if(!err){
             res.render("home", {
-                "product": result,
-                "user": req.user.username,
-                "data" : your_data
+                product: result,
+                user: req.user.username,
+                data : your_data
             })
         }
     })
@@ -33,7 +33,11 @@ const postSignup =  async (req, res) => {
 }
 
 const loginPage = (req, res) => {
-    res.render("login")
+    res.render("login", {
+        product: 0,
+        user: "",
+        data : ""
+    })
 }
 
 const postLogin = (req, res) => {
@@ -43,9 +47,6 @@ const postLogin = (req, res) => {
             res.status(404).send("not found")
         }
         else{
-            console.log(result.pass)    
-            console.log(req.body.pass)
-
             if (result.pass === req.body.pass){
                 jwt.sign({result}, "my-32-character-ultra-secure-and-ultra-long-secret", (err, token) =>{
                     if(err){
@@ -85,7 +86,6 @@ const postProduct = async (req, res) => {
 }
 const addToCart = async (req, res) => {
     let tempname = req.user._id
-    console.log(req.user)
     Order.findOne({user: tempname}, async function(err, order){
         if(!order){
             const newOrder = new Order({
@@ -103,7 +103,6 @@ const addToCart = async (req, res) => {
         if(cart){
             cart.noofitems += 1
             await cart.save()
-            res.redirect("/")
         }
         else{
             const nothing = new Cart({
@@ -111,10 +110,12 @@ const addToCart = async (req, res) => {
                 product : productneeded,
             })
             await nothing.save()
-            console.log(cart)
-            res.redirect("/")            
+
         }
     }) 
+    const your_order = await Order.findOne({'user':req.user._id}).exec()
+    const your_data = await your_order.getData()
+    res.json({ "count": your_data[0] });
 }
 
 const showCart = async (req, res) => {

@@ -7,8 +7,8 @@
             <h2 class="ms-2" style="  white-space: nowrap;
             overflow: hidden;"><%= product[i].itemname %></h2>
             <div class="bottom">
-                <button class="btn btn-outline-dark ms-2 about-quantity"> <a href="/addtocart/<%= product[i]._id %>" value="kuchh bhi rkhle"> Add to Cart </a></button>
-                <h3 class="price" id="<%= product[i]._id %>" value="add"><%= product[i].price %></h3>
+                <button class="btn btn-outline-dark ms-2 about-quantity" id="<%= product[i]._id %>">  Add to Cart </button>
+                <h3 class="price" ><%= product[i].price %></h3>
             </div>
         </div>
     <% } %>

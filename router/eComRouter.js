@@ -27,7 +27,7 @@ router.route("/login")
 router.get("/product", Pages.productPage)
 router.post("/product",upload.single('myFile'), Pages.postProduct)
 
-router.get("/addtocart/:productId", verifyToken, Pages.addToCart)
+router.post("/addtocart/:productId", verifyToken, Pages.addToCart)
 router.get("/showcart", verifyToken, Pages.showCart)
 router.post("/changevalue", Pages.changeValue)
 
