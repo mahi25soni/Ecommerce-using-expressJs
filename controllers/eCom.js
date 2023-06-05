@@ -1,4 +1,5 @@
 const { Cart, Order, User, Product, Address } = require("../models/eComModels")
+const { priceAndTotal } = require("../services/first.service")
 const bodyParser = require("body-parser")
 const jwt = require("jsonwebtoken")
 
@@ -6,8 +7,8 @@ const jwt = require("jsonwebtoken")
 
 
 const homePage = async (req, res) => {
-    const your_order = await Order.findOne({'user':req.user._id}).exec()
-    const your_data = await your_order.getData()
+    const your_data = await priceAndTotal(req.user._id)
+
     Product.find({}, function(err, result){
         if(!err){
             res.render("home", {
@@ -103,6 +104,7 @@ const addToCart = async (req, res) => {
         if(cart){
             cart.noofitems += 1
             await cart.save()
+            console.log(cart.noofitems)
         }
         else{
             const nothing = new Cart({
@@ -113,19 +115,24 @@ const addToCart = async (req, res) => {
 
         }
     }) 
-    const your_order = await Order.findOne({'user':req.user._id}).exec()
-    const your_data = await your_order.getData()
+    const your_data = await priceAndTotal(req.user._id)
+    // const your_order = await Order.findOne({'user':req.user._id}).exec()
+    // const your_data = await your_order.getData()
+
+    // console.log(kiskadata, "sfhskldfhsk:", your_data)
+
+
     res.json({ "count": your_data[0] });
 }
 
 const showCart = async (req, res) => {
     try {
-        const order = await Order.findOne({user : req.user._id}).exec();
-        const orderData = await order.getData();
+        const your_data = await priceAndTotal(req.user._id)
+
         const cart = await Cart.find({user : req.user._id}).exec();
         res.render("showCart", {
             cart: cart,
-            data: orderData,
+            data: your_data,
             user : req.user.username,
         });
 

@@ -144,18 +144,6 @@ orderSchema.pre("save", async function(){
 orderSchema.pre("findOneAndDelete" , function(){
     Cart.deleteMany({user : this.user}).exec()
 })
-
-orderSchema.methods.getData =  async function(){
-    const fullorder = await this.populate("cart")
-    const cart = fullorder.cart
-    let total_items = 0;
-    let net_total = 0;
-    cart.map(element => {
-        total_items += element.noofitems;
-        net_total += element.noofitems*element.product.price; 
-    })
-    return [total_items, net_total]
-}
 const Order = new mongoose.model("Order", orderSchema)
 
 
